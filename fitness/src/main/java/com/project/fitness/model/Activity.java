@@ -1,0 +1,27 @@
+package com.project.fitness.model;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Entity
+public class Activity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @Enumerated(EnumType.STRING)
+    private ActivityType type;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "json")
+    private Map<String,Object> additionalMetics;
+
+    private Integer duration;
+    private Integer caloriesBurned;
+    private LocalDateTime startTime;
+
+}
