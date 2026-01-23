@@ -13,7 +13,7 @@ public class Recommendation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(length = 2000)
+    @Column(length = 3000)
     private String recommendation;
 
     @JdbcTypeCode(SqlTypes.JSON)
