@@ -2,6 +2,9 @@ package com.project.fitness.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -11,12 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false,foreignKey = @ForeignKey(name = "FK_USER_ACTIVITY"))
     @JsonIgnore
     private User user;
