@@ -9,6 +9,9 @@ import com.project.fitness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ActivityService {
@@ -27,13 +30,29 @@ public class ActivityService {
                 .startTime(activityRequest.getStartTime())
                 .additionalMetics(activityRequest.getAdditionalMetics())
                 .build();
-        Activity savedActivity=activityRepository.save(activityRequest);
+        Activity savedActivity = activityRepository.save(activity);
         return mapToResponse(savedActivity);
     }
 
     private ActivityResponse mapToResponse(Activity activity) {
         ActivityResponse response=new ActivityResponse();
         response.setId(activity .getUser().getId());
+        response.setUserId(activity.getUser().getId());
+        response.setType(activity.getType());
+        response.setDuration(activity.getDuration());
+        response.setCaloriesBurned(activity.getCaloriesBurned());
+        response.setStartTime(activity.getStartTime());
+        response.setAdditionalMetics(activity.getAdditionalMetics());
+        response.setCreatedAt(activity.getCreatedAt());
+        response.setUpdateAt(activity.getUpdatedAt());
+        return response;
     }
 
+    public List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity> activityList=activityRepository.findByUserId(userId);
+        return activityList.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+    }
 }

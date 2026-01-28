@@ -19,13 +19,13 @@ public class ActivityController {
 
     @PostMapping
     public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest activityRequest) {
+        return ResponseEntity.ok(activityService.trackActivity(activityRequest));
 
     }
 
     @GetMapping
-    public ResponseEntity<List<ActivityResponse>> trackActivity(){
-
-        return "";
+    public ResponseEntity<List<ActivityResponse>> getUserActivity(@RequestHeader(value = "X-User-ID") String userId){
+        return ResponseEntity.ok(activityService.getUserActivities(userId));
     }
 }
 
