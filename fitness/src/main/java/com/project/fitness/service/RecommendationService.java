@@ -20,19 +20,24 @@ public class RecommendationService {
 
     public Recommendation generateRecommendation(RecommendationRequest request) {
 
-        User user=userRepository.findById(request.getUserId())
-                .orElseThrow(()->new RuntimeException("user not found: "+request.getUserId());
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() ->
+                        new RuntimeException("User not found: " + request.getUserId())
+                );
 
-        Activity activity=activityRepository.findById(request.getActivityId())
-                .orElseThrow(()->new RuntimeException("Activity not found: "+request.getActivityId();
+        Activity activity = activityRepository.findById(request.getActivityId())
+                .orElseThrow(() ->
+                        new RuntimeException("Activity not found: " + request.getActivityId())
+                );
 
-        Recommendation recommendation=Recommendation.builder()
+        Recommendation recommendation = Recommendation.builder()
                 .user(user)
                 .activity(activity)
                 .improvements(request.getImprovements())
                 .suggestions(request.getSuggestions())
                 .safety(request.getSafety())
                 .build();
+
         return recommendationRepository.save(recommendation);
     }
 }
