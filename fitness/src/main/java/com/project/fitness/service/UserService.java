@@ -1,5 +1,6 @@
 package com.project.fitness.service;
 
+import com.project.fitness.dto.LoginRequest;
 import com.project.fitness.dto.RegisterRequest;
 import com.project.fitness.dto.UserResponse;
 import com.project.fitness.model.User;
@@ -8,10 +9,6 @@ import com.project.fitness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +41,17 @@ public class UserService {
         userResponse.setCreatedAt(savedUser.getCreatedAt());
         userResponse.setUpdatedAt(savedUser.getUpdatedAt());
         return userResponse;
+    }
+
+    public User authenticate(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+        if (user == null) {
+            throw new RuntimeException("Invalid credentials. Please try again.");
+        }
+        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials. Please try again.");
+        }
+        return user;
+
     }
 }
